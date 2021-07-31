@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+
+<% data.forEach(function(datum){ %>
+  <div class="jumbotron my-3">
+    <a class="link-primary"><h5><%= datum.question %></h5></a>
+    <p class="lead"><%= datum.answer %> </p>
+  </div>
+<% }) %>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Interview Question</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="new_question" action="/questions" method="POST">
+          <div class="form-group">
+            <label for="recipient-name" class="col-form-label">Question:</label>
+            <input type="text" class="form-control" id="question-name">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">Answer:</label>
+            <textarea class="form-control" id="answer-text"></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">CLOSE</button>
+            <button id="paramsOkay" type="button" class="btn btn-primary">
+              POST
+          </button>
+          </div>
+        </form>
+      </div>   
+    </div>
+  </div>
+</div>
+
+
+<footer>
+  <%- include('../partials/footer'); %>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+ 
+
+
+ $(document).ready(function(){
+    $('#exampleModal').on('click','#paramsOkay',function(e){
+      const thequiz=$('#question-name').val();
+      const theanswer=$('#answer-text').val();
+      
+      const data={
+        'question':thequiz,
+        'answer':theanswer
+      };
+
+      $.ajax({
+         url:'/questions',
+         data:data,
+         method:'POST',
+         success:function(){
+           console.log('Post successful');
+         }
+      });
+    })
+    
+ })
+
+
+</script>
+
+</body>
+</html>
